@@ -1,0 +1,48 @@
+<div class="playlist dropdown-item" *ngFor="let playlist of videoPlaylists" (click)="togglePlaylist($event, playlist)">
+  <div>
+    <my-peertube-checkbox [inputName]="'in-playlist-' + playlist.id" [(ngModel)]="playlist.inPlaylist"></my-peertube-checkbox>
+
+    <div class="display-name">{{ playlist.displayName }}</div>
+  </div>
+
+  <div class="">
+    <div class="start-at">
+      <my-peertube-checkbox
+        inputName="startAt" [(ngModel)]="startAtCheckbox"
+        i18n-labelText labelText="Start at"
+      ></my-peertube-checkbox>
+
+      <my-timestamp-input [timestamp]="currentVideoTimestamp" [maxTimestamp]="video.duration" [disabled]="!startAtCheckbox"></my-timestamp-input>
+    </div>
+
+    <div class="stop-at">
+      <my-peertube-checkbox
+        inputName="startAt" [(ngModel)]="startAtCheckbox"
+        i18n-labelText labelText="Start at"
+      ></my-peertube-checkbox>
+
+      <my-timestamp-input [timestamp]="currentVideoTimestamp" [maxTimestamp]="video.duration" [disabled]="!startAtCheckbox"></my-timestamp-input>
+    </div>
+  </div>
+</div>
+
+<div class="new-playlist-button dropdown-item" (click)="openCreateBlock($event)" [hidden]="isNewPlaylistBlockOpened">
+  <my-global-icon iconName="add"></my-global-icon>
+
+  Create a new playlist
+</div>
+
+<form class="new-playlist-block dropdown-item" *ngIf="isNewPlaylistBlockOpened" (ngSubmit)="createPlaylist()" [formGroup]="form">
+  <div class="form-group">
+    <label i18n for="display-name">Display name</label>
+    <input
+      type="text" id="display-name"
+      formControlName="display-name" [ngClass]="{ 'input-error': formErrors['display-name'] }"
+    >
+    <div *ngIf="formErrors['display-name']" class="form-error">
+      {{ formErrors['display-name'] }}
+    </div>
+  </div>
+
+  <input type="submit" i18n-value value="Create" [disabled]="!form.valid">
+</form>
